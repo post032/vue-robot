@@ -42,16 +42,16 @@
       <h1>Cart</h1>
       <table>
         <thead>
-          <tr>
-            <th>Robot</th>
-            <th class="cost">Cost</th>
-          </tr>
+        <tr>
+          <th>Robot</th>
+          <th class="cost">Cost</th>
+        </tr>
         </thead>
         <tbody>
-          <tr v-for="(robot, index) in cart" :key="index">
-            <td>{{ robot.head.title }}</td>
-            <td class="cost">{{ robot.cost }}</td>
-          </tr>
+        <tr v-for="(robot, index) in cart" :key="index">
+          <td>{{ robot.head.title }}</td>
+          <td class="cost">{{ robot.cost }}</td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -60,6 +60,7 @@
 
 <script>
 import availableParts from '../data/parts';
+import CreatedHookMixin from './created-hook-mixin';
 
 function getPrevValidIndex(index, lenght) {
   const deprecatedIndex = index - 1;
@@ -73,6 +74,7 @@ function getNextValidIndex(index, lenght) {
 
 export default {
   name: 'RobotBuilder',
+
   data() {
     return {
       availableParts,
@@ -84,6 +86,7 @@ export default {
       selectedBaseIndex: 0,
     };
   },
+  mixins: [CreatedHookMixin],
   computed: {
     saleBorderClass() {
       return this.selectedRobot.head.onSale ? 'sale-border' : '';
@@ -107,7 +110,10 @@ export default {
         + robot.torso.cost
         + robot.base.cost;
 
-      this.cart.push({ ...robot, cost });
+      this.cart.push({
+        ...robot,
+        cost,
+      });
     },
     selectNextHead() {
       this.selectedHeadIndex = getNextValidIndex(
@@ -173,7 +179,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .part {
   position: relative;
   width: 165px;
@@ -182,7 +188,7 @@ export default {
 }
 
 .part img {
-  width: 165px;
+    width: 165px;
 }
 
 .top-row {
